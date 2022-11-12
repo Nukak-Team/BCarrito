@@ -12,9 +12,9 @@ const carritoSet = async (carrito) => {
         "http://localhost:8085/productos/id?id="+carrito.idProducto
     )
 
-    // const cliente = request.get(
-    //     "http://localhost:8080/cliente/id?id="+carrito.idCliente
-    // )
+    const cliente = request.get(
+        "http://localhost:8087/cliente/id?id="+carrito.idCliente
+    )
 
     const stockProducto = request.patch(
         "http://localhost:8085/productos/nombre?id="+carrito.idProducto,
@@ -22,14 +22,13 @@ const carritoSet = async (carrito) => {
     )
     
     
-    await request.all([producto,stockProducto])
+    await request.all([producto,cliente,stockProducto])
     .then(
         (res)=>{
             console.log("Recibimos llamada de producto y cliente.")
-            console.log(res[0].data);
-            console.log(res[1].data);
-            carrito.vuelo= res[0].data
-            carrito.mensaje= res[1].data
+            carrito.idProducto= res[0].data
+            carrito.Cliente= res[1].data
+            carrito.Mensaje= res[2].data
         }
     )
     .catch(
@@ -41,6 +40,8 @@ const carritoSet = async (carrito) => {
     await Carrito.push(carrito)
     return Carrito
 }
+
+
 
 
 

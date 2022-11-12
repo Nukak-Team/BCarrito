@@ -24,9 +24,7 @@ app.post(pathName,
     async (req, res)=>{
         console.log("Se recibe la petición de set");
         console.log(req.body);
-        console.log("------ 2 ------");
         let carrito = await carritoServices.carritoSetExport(req.body)
-        console.log("------ 3 ------");
         res.send({"mensaje":"Producto guardado","Producto":carrito})
     }
 )
