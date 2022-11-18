@@ -6,7 +6,7 @@ let request = require("axios")
 
 async function getConexiones() {
     const nameDb = "FerreteriaNukak"
-    const client = await getMongo.getClienteExport(nameDb)
+    const client = await getMongo.getClientExport(nameDb)
     const collection = await getMongo.getCollectionExport(client, nameDb)
     return { collection, client }
 }

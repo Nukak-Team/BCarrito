@@ -1,7 +1,7 @@
 const {MongoClient} = require("mongodb")
 
 const getClient = async (nameDB) => {
-    const url = "mongodb+srv://NukakTeam:Nukak.2610@clusternukak.ld93wmw.mongodb.net/"
+    const url = "mongodb+srv://MisionTic:Pruebas.123@cluster0.bjpznnt.mongodb.net/"
     const client = new MongoClient(url+nameDB)
 
     await client.connect().then(
