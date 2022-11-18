@@ -11,6 +11,7 @@ const pathName ="/carrito"
 app.use(cors())
 app.use(body_parser.json())
 
+// Función get
 app.get(pathName, 
     (req, res)=>{
         console.log("Se recibe la petición de get");
@@ -19,7 +20,23 @@ app.get(pathName,
     }
 )
 
+app.get(pathName+"/pendientes/idCliente",
+    async (req, res)=>{
+        console.log("Recibimos peticion")
+        id = req.query.id
+        estado = req.query.estado
+        res.send(await carritoServices.carritoPendienteIdGetExport(id,estado))
+    }
+)
 
+app.get(pathName+"/carritoCanceladas",
+    async (req, res)=>{
+        console.log("Recibimos peticion")
+        res.send(await carritoServices.carritoACancelarExportar())
+    }
+)
+
+// Función post
 app.post(pathName, 
     async (req, res)=>{
         console.log("Se recibe la petición de set");
@@ -29,8 +46,7 @@ app.post(pathName,
     }
 )
 
-//ToDo
-/*
+// Función delete
 app.delete(pathName, 
     (req, res)=>{
         console.log("Se recibe la petición de delete");
@@ -38,10 +54,11 @@ app.delete(pathName,
         let id = req.query.id
         console.log(id);
         let carrito = carritoServices.carritoDeleteExport(id)
-        res.send({"mensaje":"producto eliminado","vuelos":carrito})
+        res.send({"mensaje":"producto eliminado","Producto":carrito})
     }
 )
 
+// Función put
 app.put(pathName, 
     (req, res)=>{
         console.log("Se recibe la petición");
@@ -61,7 +78,13 @@ app.patch(pathName,
     }
 )
 
-*/
+app.patch(pathName+"/carrito/estado",
+    (req, res)=>{
+        console.log("Recibimos peticion")
+        //console.log(req.body)
+        res.send(carritoServices.setEstadoCarritoExport(req.body))
+    }
+)
 
 app.listen(port, 
     ()=>{
