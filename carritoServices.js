@@ -29,8 +29,17 @@ const carritoGetId = (id) => {
     return carrit
 }
 
+const carritoPendienteIdGet = async (idCliente)=>{
+    const { collection, client } = await getConexiones()
+    const carritoCliente = collection.find({"estadoPago":"Pendiente","idcliente":idCliente})
+    const carritoClienteList = carritoCliente.toArray()
+    await getMongo.closeClientExport(client)
+    return carritoClienteList
+}
+
 // Set
 const carritoSet = async (carrito) => {
+    const {collection, client} = await getConexiones()
     console.log("llama a carrito a guardar")
     const carrit = collection.find({"idCliente":carrito.idCliente,"estadoPago":"Pendiente"}).toArray()
     
@@ -55,7 +64,6 @@ const carritoSet = async (carrito) => {
             carrito.Stock
         )
         
-        
         await request.all([producto,cliente,stockProducto])
         .then(
             async (res)=>{
@@ -67,12 +75,18 @@ const carritoSet = async (carrito) => {
                 for(let i = 0 ; i < carrito.Stock.length; i++ ){
                     carrito.Stock[i].cancelada = true
                 }
-            
+                console.log("*************** carrito *************");
                 console.log(carrito)
             
                 await collection.insertOne(carrito).then(
                     (resultado)=>{
+                        console.log("*************** Resultado *************");
                         console.log(resultado)
+                    }
+                )
+                .catch(
+                    (resultado)=>{
+                        console.log("Error reservando el prodcuto en el Stock");
                     }
                 )
             }
@@ -84,13 +98,13 @@ const carritoSet = async (carrito) => {
         )
     }
     await getMongo.closeClientExport(client)
-    return Carrito
+    return carrito
 }
 
 const setEstadoCarrito = async (carritoPago) => {
     const { collection, client } = await getConexiones()
     console.log({"_id":new ObjectId(carritoPago.idCarrito)})
-    collection.updateOne({"_id":new ObjectId(carritoPago.idCarrito)},{"$set":{"estadoPago":carritoPago.estadoCarrito}})
+    await collection.updateOne({"_id":new ObjectId(carritoPago.idCarrito)},{"$set":{"estadoPago":carritoPago.estadoCarrito}})
     await getMongo.closeClientExport(client)
     return "Carrito con pago confirmado"
 }
@@ -109,14 +123,6 @@ const carritoDelete = (id) => {
 }
 
 //
-
-const carritoPendienteIdGet = async (idCliente)=>{
-    const { collection, client } = await getConexiones()
-    const carritoCliente = collection.find({"estadoPago":"Pendiente","idcliente":idCliente})
-    const carritoClienteList = carritoCliente.toArray()
-    await getMongo.closeClientExport(client)
-    return carritoClienteList
-}
 
 //
 

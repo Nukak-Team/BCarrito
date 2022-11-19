@@ -13,10 +13,10 @@ app.use(body_parser.json())
 
 // Función get
 app.get(pathName, 
-    (req, res)=>{
+    async (req, res)=>{
         console.log("Se recibe la petición de get");
         //console.log(req);
-        res.send(carritoServices.carritoGetExport())
+        res.send(await carritoServices.carritoGetExport())
     }
 )
 
@@ -78,11 +78,11 @@ app.patch(pathName,
     }
 )
 
-app.patch(pathName+"/carrito/estado",
-    (req, res)=>{
+app.patch(pathName+"/estado",
+    async (req, res)=>{
         console.log("Recibimos peticion")
         //console.log(req.body)
-        res.send(carritoServices.setEstadoCarritoExport(req.body))
+        res.send(await carritoServices.setEstadoCarritoExport(req.body))
     }
 )
 
